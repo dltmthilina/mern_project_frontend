@@ -60,10 +60,10 @@ const Auth = () => {
     if(isLoginMode){
 
     }else{
-      
-          console.log(formState.inputs.name.value, formState.inputs.email.value,formState.inputs.password.value,)
-          const response =  await fetch('http://localhost:5000/api/user/signup', {
-              method:"POST",
+
+      try {
+         const response =  await fetch('http://localhost:5000/api/user/signup', {
+              method:'POST',
               headers:{
               'Content-Type':'application/json'
               },
@@ -71,13 +71,16 @@ const Auth = () => {
               name:formState.inputs.name.value,
               email:formState.inputs.email.value,
               password:formState.inputs.password.value,
-      
             })
 
-          })
-        //const responseData =  await response.json();
-         console.log(response)
+          });
 
+        const responseData =  await response.json();
+          console.log(responseData)
+      } catch (error) {
+        console.log(error)
+      }
+    
     }
    
     auth.login();
