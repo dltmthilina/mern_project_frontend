@@ -26,6 +26,7 @@ const UserPlaces = () => {
      fetchPlaces();
   }, [sendRequest, userId]);
 
+  console.log(loadedPlaces)
 
   return <React.Fragment>
       <ErrorModal error={error} onClear={clearError}/>

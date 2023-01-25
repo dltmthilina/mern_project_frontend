@@ -1,67 +1,55 @@
-import React, {useRef, useState, useEffect} from "react";
+import React,{useRef, useState} from "react";
 
-import Button from "./Button";
+import Button from "./Button"
+
+import "./ImageUpload.css";
 
 const ImageUpload = (props) => {
 
-  const [file, setFile] = useState();
-  const [preViewUrl, setPreViewUrl] = useState();
-  const [isValid, setIsValid] = useState(false);
+    const [file, setFile] = useState();
+    const [previewUrl, setPreviewUrl] = useState();
+    const [isValid, setIsValid] = useState(false);
 
     const filePickerRef = useRef();
-
-    useEffect(()=>{
-      if(!file){
-        return
-      }
-      const fileReader = new FileReader();
-      fileReader.onload=()=>{
-        setPreViewUrl(fileReader.result);
-      };
-      fileReader.readAsDataURL(file)
-    }, [file])
-
-    const pickedHandler=(event)=>{
-      let pickedFile;
-      let fileIsValid = isValid
-      if(event.target.files && event.target.files.length ===1){
-        pickedFile = event.target.files[0];
-        setFile(pickedFile);
-        setIsValid(true);
-        fileIsValid = true;
-      }else{
-        setIsValid(false);
-        fileIsValid = false;
-      }
-      props.onInput(props.id, pickedFile, fileIsValid)
-       
-    };
-
-    const pickImageHandler=()=>{
+    const ImageUpload=()=>{
         filePickerRef.current.click();
     }
+
+    const pickedHandler=(e)=>{
+       let pickedFile;
+       let fileIsValid = isValid;
+       if(e.target.files && e.target.files.length ===1){
+        pickedFile = e.target.files[0];
+        setFile(pickedFile);
+        fileIsValid = true;
+
+       }else{
+        setIsValid(false)
+        fileIsValid = false
+       }
+       props.onInput(props.id, pickedFile, fileIsValid)
+    }
+
   return (
     <div className="form-control">
       <input
-        id={props.id}
+        id={prompt.id}
         ref={filePickerRef}
-        style={{ display: "none" }}
         type="file"
+        style={{ display: "none" }}
         accept=".jpg, .png, .jpeg"
         onChange={pickedHandler}
       />
-      <div className={`image-upload ${props.center && "center"}`}>
-        <div className="image-upload__preview">
-          {preViewUrl && <img src={preViewUrl} alt="Preview"/>}
-          {!preViewUrl && <p>Please pick an image.</p>} 
+      <div>
+        <div className={`image-upload ${props.center && "center"} `}>
+            <div className="image-upload__preview">
+                <img src="" alt="preview"/>
+            </div>
+            <Button type="button" onClick={ImageUpload}>Pick Image</Button>
         </div>
-        <Button type="button" onClick={pickImageHandler}>
-          PICK Image
-        </Button>
       </div>
-      {!isValid && <p>{props.errorText}</p>}
     </div>
   );
 };
 
-export default ImageUpload
+export default ImageUpload;
